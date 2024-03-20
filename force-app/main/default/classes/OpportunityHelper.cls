@@ -24,8 +24,18 @@ public with sharing class OpportunityHelper {
                     conversionRateMap.put(uniqueKey, rate);
                 }
             }
+        } 
+    }
+
+    public DatedConversionRate getConversionRate(Opportunity opp){
+        DatedConversionRate conversionRate = new DatedConversionRate();
+        String uniqueKey = opp.CurrencyIsoCode + opp.CloseDate.format();
+        if(conversionRateMap != null && conversionRateMap.containsKey(uniqueKey)){
+            conversionRate = conversionRateMap.get(uniqueKey);
+            return conversionRate;
+        } else {
+            return null;
         }
-        
     }
 
     public void setAmountUSDValue(Opportunity opp, DatedConversionRate rate){

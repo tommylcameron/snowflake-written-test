@@ -8,8 +8,7 @@ public with sharing class OpportunityTriggerHandler implements TriggerInterface{
 
         for(Opportunity opp : oppList){
             if(opp.CloseDate != null && opp.Amount != null){
-                String uniqueKey = opp.CurrencyIsoCode + opp.CloseDate.format();
-                DatedConversionRate conversionRate = helper.conversionRateMap.containsKey(uniqueKey) ? helper.conversionRateMap.get(uniqueKey) : null;
+                DatedConversionRate conversionRate = helper.getConversionRate(opp);
                 helper.setAmountUSDValue(opp, conversionRate);
             }
         }
@@ -29,8 +28,7 @@ public with sharing class OpportunityTriggerHandler implements TriggerInterface{
         for(Opportunity newOpp : newOppMap.values()){
             Opportunity oldOpp = oldOppMap.get(newOpp.Id);
             if(oldOpp.CloseDate != newOpp.CloseDate || oldOpp.Amount != newOpp.Amount){
-                String uniqueKey = newOpp.CurrencyIsoCode + newOpp.CloseDate.format();
-                DatedConversionRate conversionRate = helper.conversionRateMap.containsKey(uniqueKey) ? helper.conversionRateMap.get(uniqueKey) : null;
+                DatedConversionRate conversionRate = helper.getConversionRate(newOpp);
                 helper.setAmountUSDValue(newOpp, conversionRate);
             }
         }
